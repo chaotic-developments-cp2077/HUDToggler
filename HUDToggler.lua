@@ -29,7 +29,7 @@ local HUDToggler = {
 local settingsCache = HUDToggler.Settings
 
 -- Draws CET overlay window
-HUDToggler.drawMenu = function()
+HUDToggler.DrawMenu = function()
   if not HUDToggler.isCETOpen then return end
 
   local fullWidth, fullHeight = GetDisplayResolution()
@@ -66,7 +66,7 @@ HUDToggler.drawMenu = function()
   ImGui.End()
 end
 
-HUDToggler.syncManagedSettings = function()
+HUDToggler.SyncManagedSettings = function()
   local newManagedSettings = {}
 
   for _, value in pairs(settingsCache) do

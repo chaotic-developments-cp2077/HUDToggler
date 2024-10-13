@@ -8,11 +8,11 @@ end)
 
 registerForEvent("onOverlayClose", function()
   HUDToggler.isCETOpen = false
-  HUDToggler.syncManagedSettings()
+  HUDToggler.SyncManagedSettings()
 end)
 
 registerForEvent("onDraw", function()
-  HUDToggler.drawMenu()
+  HUDToggler.DrawMenu()
 end)
 
 registerForEvent("onInit", function()
