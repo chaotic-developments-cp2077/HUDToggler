@@ -1,5 +1,5 @@
-local GameUI = require("GameUI")
-local HUDToggler = require("HUDToggler")
+-- Loading these after init to ensure the game engine is fully initialised
+local GameUI, HUDToggler
 
 local function updateHUD()
   if GameUI.IsVehicle() then
@@ -10,6 +10,9 @@ local function updateHUD()
 end
 
 registerForEvent("onInit", function()
+  GameUI = require("GameUI")
+  HUDToggler = require("HUDToggler")
+
   HUDToggler.LoadData()
 
   updateHUD()
