@@ -80,7 +80,7 @@ HUDToggler.UpdateVehicleHUD = function()
 end
 
 HUDToggler.SaveData = function()
-  local file = io.open("HUDTogglerData.json", "w")
+  local file = io.open("data.json", "w")
 
   if not file then
     print("[HUDToggler]: SaveData: failed to open or create data file")
@@ -92,10 +92,10 @@ HUDToggler.SaveData = function()
 end
 
 HUDToggler.LoadData = function()
-  local file = io.open("HUDTogglerData.json", "r")
+  local file = io.open("data.json", "r")
 
   if not file then
-    print("[HUDToggler]: LoadData: data file not found")
+    print("[HUDToggler]: LoadData: data file not found. This is expected if the mod has just been installed.")
     return
   end
 
