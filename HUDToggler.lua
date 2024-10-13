@@ -1,6 +1,8 @@
+local GameSettings = require("GameSettings")
+
 local HUDToggler = {
   isCETOpen = false,
-  HUDSettingGroupPath = "/interface/hud",
+  HUDSettingsGroup = GameSettings.GetSettingsGroup("/interface/hud"),
   -- Visibility preferences for each setting in "HUD Visibility" section of interface settings.
   -- The `varName` corresponds to the setting in game code (DO NOT CHANGE)
   Settings = {
@@ -25,13 +27,11 @@ local HUDToggler = {
   ManagedSettings = {} -- HUD elements that must be toggled when entering/exiting vehicles (populated dynamically when overlay is closed)
 }
 
--- Assign to a local variable for better performance
-local settingsCache = HUDToggler.Settings
-
 -- Draws CET overlay window
 HUDToggler.DrawMenu = function()
   if not HUDToggler.isCETOpen then return end
 
+  local settingsCache = HUDToggler.Settings
   local fullWidth, fullHeight = GetDisplayResolution()
 
   -- Set window position and size
@@ -68,6 +68,7 @@ end
 
 HUDToggler.SyncManagedSettings = function()
   local newManagedSettings = {}
+  local settingsCache = HUDToggler.Settings
 
   for _, value in pairs(settingsCache) do
     if value.onFoot ~= value.vehicle then
@@ -76,6 +77,50 @@ HUDToggler.SyncManagedSettings = function()
   end
 
   HUDToggler.ManagedSettings = newManagedSettings
+end
+
+HUDToggler.UpdateOnFootHUD = function()
+  for _, setting in ipairs(HUDToggler.ManagedSettings) do
+    GameSettings.UpdateSetting(HUDToggler.HUDSettingsGroup, setting.varName, setting.onFoot)
+  end
+end
+
+HUDToggler.UpdateVehicleHUD = function()
+  for _, setting in ipairs(HUDToggler.ManagedSettings) do
+    GameSettings.UpdateSetting(HUDToggler.HUDSettingsGroup, setting.varName, setting.vehicle)
+  end
+end
+
+HUDToggler.SaveData = function()
+  local file = io.open("HUDTogglerData.json", "w")
+
+  if not file then
+    print("[HUDToggler]: SaveData: failed to open or create data file")
+    return
+  end
+
+  file:write(json.encode(HUDToggler.Settings))
+  file:close()
+end
+
+HUDToggler.LoadData = function()
+  local file = io.open("HUDTogglerData.json", "r")
+
+  if not file then
+    print("[HUDToggler]: LoadData: data file not found")
+    return
+  end
+
+  local content = file:read("a")
+
+  if not content then
+    print("[HUDToggler]: LoadData: failed to read file content")
+    return
+  end
+
+  file:close()
+
+  HUDToggler.Settings = json.decode(content)
 end
 
 return HUDToggler
