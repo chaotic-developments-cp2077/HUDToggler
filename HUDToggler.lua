@@ -24,14 +24,15 @@ local HUDToggler = {
     VehicleHUD = { varName = "vehicle_hud", onFoot = true, vehicle = true },
     HUDMarkers = { varName = "hud_markers", onFoot = true, vehicle = true },
   },
-  ManagedSettings = {} -- HUD elements that must be toggled when entering/exiting vehicles (populated dynamically when overlay is closed)
 }
+
+-- Local variable is more performant than table lookup
+local settingsCache = HUDToggler.Settings
 
 -- Draws CET overlay window
 HUDToggler.DrawMenu = function()
   if not HUDToggler.isCETOpen then return end
 
-  local settingsCache = HUDToggler.Settings
   local fullWidth, fullHeight = GetDisplayResolution()
 
   -- Set window position and size
@@ -66,27 +67,14 @@ HUDToggler.DrawMenu = function()
   ImGui.End()
 end
 
-HUDToggler.SyncManagedSettings = function()
-  local newManagedSettings = {}
-  local settingsCache = HUDToggler.Settings
-
-  for _, value in pairs(settingsCache) do
-    if value.onFoot ~= value.vehicle then
-      newManagedSettings[#newManagedSettings+1] = value
-    end
-  end
-
-  HUDToggler.ManagedSettings = newManagedSettings
-end
-
 HUDToggler.UpdateOnFootHUD = function()
-  for _, setting in ipairs(HUDToggler.ManagedSettings) do
+  for _, setting in pairs(settingsCache) do
     GameSettings.UpdateSetting(HUDToggler.HUDSettingsGroup, setting.varName, setting.onFoot)
   end
 end
 
 HUDToggler.UpdateVehicleHUD = function()
-  for _, setting in ipairs(HUDToggler.ManagedSettings) do
+  for _, setting in pairs(settingsCache) do
     GameSettings.UpdateSetting(HUDToggler.HUDSettingsGroup, setting.varName, setting.vehicle)
   end
 end
@@ -121,6 +109,7 @@ HUDToggler.LoadData = function()
   file:close()
 
   HUDToggler.Settings = json.decode(content)
+  settingsCache = HUDToggler.Settings
 end
 
 return HUDToggler

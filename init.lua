@@ -32,7 +32,6 @@ end)
 
 registerForEvent("onOverlayClose", function()
   HUDToggler.isCETOpen = false
-  HUDToggler.SyncManagedSettings()
 
   updateHUD()
 
