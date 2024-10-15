@@ -12,7 +12,7 @@ Running this mod requires [CET](https://www.nexusmods.com/cyberpunk2077/mods/107
 ## Demo
 Note that this demo is from v1.0.0 but the functionality remains the same:
 
-![Demo](https://i.imgur.com/s8iSm73.mp4)
+https://imgur.com/s8iSm73
 
 ## Updates
 Please **reinstall this mod** when updating to a newer version, as it may break if the previous version is not removed.
