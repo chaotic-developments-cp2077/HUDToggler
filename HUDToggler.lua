@@ -7,23 +7,23 @@ local HUDToggler = {
   -- Visibility preferences for each setting in "HUD Visibility" section of interface settings.
   -- The `varName` corresponds to the setting in game code (DO NOT CHANGE)
   Settings = {
-    Minimap = { varName = "minimap", onFoot = true, vehicle = true },
-    HealthBar = { varName = "healthbar", onFoot = true, vehicle = true },
-    StaminaAndOxygen = { varName = "stamina_oxygen", onFoot = true, vehicle = true },
-    BossHealthBars = { varName = "npc_healthbar", onFoot = true, vehicle = true },
-    AmmoCounter = { varName = "ammo_counter", onFoot = true, vehicle = true },
-    Hints = { varName = "input_hints", onFoot = true, vehicle = true },
-    ActionButtons = { varName = "action_buttons", onFoot = true, vehicle = true },
-    ActivityLog = { varName = "activity_log", onFoot = true, vehicle = true },
-    CrossHair = { varName = "crosshairs", onFoot = true, vehicle = true },
-    JobTracker = { varName = "quest_tracker", onFoot = true, vehicle = true },
-    TargetMarker = { varName = "object_markers", onFoot = true, vehicle = true },
-    NPCNames = { varName = "npc_names", onFoot = true, vehicle = true },
-    NCPDWantedLevel = { varName = "wanted_level", onFoot = true, vehicle = true },
-    NPCNameplates = { varName = "npc_nameplates", onFoot = true, vehicle = true },
-    CrouchIndicator = { varName = "crouch_indicator", onFoot = true, vehicle = true },
-    VehicleHUD = { varName = "vehicle_hud", onFoot = true, vehicle = true },
-    HUDMarkers = { varName = "hud_markers", onFoot = true, vehicle = true },
+    Minimap = { varName = "minimap", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    HealthBar = { varName = "healthbar", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    StaminaAndOxygen = { varName = "stamina_oxygen", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    BossHealthBars = { varName = "npc_healthbar", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    AmmoCounter = { varName = "ammo_counter", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    Hints = { varName = "input_hints", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    ActionButtons = { varName = "action_buttons", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    ActivityLog = { varName = "activity_log", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    CrossHair = { varName = "crosshairs", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    JobTracker = { varName = "quest_tracker", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    TargetMarker = { varName = "object_markers", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    NPCNames = { varName = "npc_names", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    NCPDWantedLevel = { varName = "wanted_level", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    NPCNameplates = { varName = "npc_nameplates", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    CrouchIndicator = { varName = "crouch_indicator", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    VehicleHUD = { varName = "vehicle_hud", onFoot = true, vehicle = true, scanner = true, wheel = true },
+    HUDMarkers = { varName = "hud_markers", onFoot = true, vehicle = true, scanner = true, wheel = true },
   },
 }
 
@@ -61,6 +61,26 @@ HUDToggler.DrawMenu = function()
     for setting, value in pairs(settingsCache) do
       ImGui.PushID(setting .. "_vehicle")
       value.vehicle = ImGui.Checkbox(setting, value.vehicle)
+      ImGui.PopID()
+    end
+  end
+
+  ImGui.Separator()
+
+  if ImGui.CollapsingHeader("In Scanner") then
+    for setting, value in pairs(settingsCache) do
+      ImGui.PushID(setting .. "_scanner")
+      value.scanner = ImGui.Checkbox(setting, value.scanner)
+      ImGui.PopID()
+    end
+  end
+
+  ImGui.Separator()
+
+  if ImGui.CollapsingHeader("In Weapon Wheel") then
+    for setting, value in pairs(settingsCache) do
+      ImGui.PushID(setting .. "_wheel")
+      value.wheel = ImGui.Checkbox(setting, value.wheel)
       ImGui.PopID()
     end
   end

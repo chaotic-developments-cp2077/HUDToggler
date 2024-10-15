@@ -2,7 +2,11 @@
 local GameUI, HUDToggler
 
 local function updateHUD()
-  if GameUI.IsVehicle() then
+  if GameUI.IsScanner() then
+    HUDToggler.ToggleHUD("scanner")
+  elseif GameUI.IsWheel() then
+    HUDToggler.ToggleHUD("wheel")
+  elseif GameUI.IsVehicle() then
     HUDToggler.ToggleHUD("vehicle")
   else
     HUDToggler.ToggleHUD("onFoot")
@@ -15,15 +19,31 @@ registerForEvent("onInit", function()
 
   HUDToggler.LoadData()
 
-  updateHUD()
-
   GameUI.Listen(GameUI.Event.VehicleEnter, function()
     HUDToggler.ToggleHUD("vehicle")
 	end)
 
   GameUI.Listen(GameUI.Event.VehicleExit, function()
-    HUDToggler.ToggleHUD("onFoot")
+    updateHUD()
 	end)
+
+  GameUI.Listen(GameUI.Event.ScannerOpen, function()
+    HUDToggler.ToggleHUD("scanner")
+	end)
+
+  GameUI.Listen(GameUI.Event.ScannerClose, function()
+    updateHUD()
+	end)
+
+  GameUI.Listen(GameUI.Event.WheelOpen, function()
+    HUDToggler.ToggleHUD("wheel")
+	end)
+
+  GameUI.Listen(GameUI.Event.WheelClose, function()
+    updateHUD()
+	end)
+
+  updateHUD()
 end)
 
 registerForEvent("onOverlayOpen", function()
