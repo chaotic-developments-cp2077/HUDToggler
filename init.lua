@@ -42,4 +42,10 @@ registerForEvent("onDraw", function()
   HUDToggler.DrawMenu()
 end)
 
+registerInput("input_toggle_all_hud", "Toggle all HUD on/off", function (keypress)
+  if not keypress or not HUDToggler then return end
+
+  HUDToggler.ToggleHUD(nil)
+end)
+
 return HUDToggler

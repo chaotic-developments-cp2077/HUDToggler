@@ -2,6 +2,7 @@ local GameSettings = require("GameSettings")
 
 local HUDToggler = {
   isCETOpen = false,
+  isAllHUDToggled = true,
   HUDSettingsGroup = GameSettings.GetSettingsGroup("/interface/hud"),
   -- Visibility preferences for each setting in "HUD Visibility" section of interface settings.
   -- The `varName` corresponds to the setting in game code (DO NOT CHANGE)
@@ -68,9 +69,23 @@ HUDToggler.DrawMenu = function()
 end
 
 -- Toggles in-game HUD settings using `key` to determine whether on-foot or vehicle preferences should be used.
+-- If `key` is `nil`, toggle all HUD on/off using `HUDToggler.isAllHUDToggled`.
 HUDToggler.ToggleHUD = function(key)
+  local settingsGroup = HUDToggler.HUDSettingsGroup
+
+  if key ~= nil then
+    for _, setting in pairs(settingsCache) do
+      GameSettings.UpdateSetting(settingsGroup, setting.varName, setting[key])
+    end
+
+    return
+  end
+
+  HUDToggler.isAllHUDToggled = not HUDToggler.isAllHUDToggled
+  local isAllHUDToggled = HUDToggler.isAllHUDToggled
+
   for _, setting in pairs(settingsCache) do
-    GameSettings.UpdateSetting(HUDToggler.HUDSettingsGroup, setting.varName, setting[key])
+    GameSettings.UpdateSetting(settingsGroup, setting.varName, isAllHUDToggled)
   end
 end
 
