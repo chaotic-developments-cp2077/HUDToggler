@@ -2,7 +2,7 @@ local GameSettings = require("GameSettings")
 
 local HUDToggler = {
   isCETOpen = false,
-  isAllHUDToggled = true,
+  isHUDShown = true,
   HUDSettingsGroup = GameSettings.GetSettingsGroup("/interface/hud"),
   -- Visibility preferences for each setting in "HUD Visibility" section of interface settings.
   -- The `varName` corresponds to the setting in game code (DO NOT CHANGE)
@@ -73,7 +73,7 @@ end
 HUDToggler.ToggleHUD = function(key)
   local settingsGroup = HUDToggler.HUDSettingsGroup
 
-  if key ~= nil then
+  if key ~= nil and HUDToggler.isHUDShown then
     for _, setting in pairs(settingsCache) do
       GameSettings.UpdateSetting(settingsGroup, setting.varName, setting[key])
     end
@@ -81,11 +81,8 @@ HUDToggler.ToggleHUD = function(key)
     return
   end
 
-  HUDToggler.isAllHUDToggled = not HUDToggler.isAllHUDToggled
-  local isAllHUDToggled = HUDToggler.isAllHUDToggled
-
   for _, setting in pairs(settingsCache) do
-    GameSettings.UpdateSetting(settingsGroup, setting.varName, isAllHUDToggled)
+    GameSettings.UpdateSetting(settingsGroup, setting.varName, HUDToggler.isHUDShown)
   end
 end
 
