@@ -67,15 +67,10 @@ HUDToggler.DrawMenu = function()
   ImGui.End()
 end
 
-HUDToggler.UpdateOnFootHUD = function()
+-- Toggles in-game HUD settings using `key` to determine whether on-foot or vehicle preferences should be used.
+HUDToggler.ToggleHUD = function(key)
   for _, setting in pairs(settingsCache) do
-    GameSettings.UpdateSetting(HUDToggler.HUDSettingsGroup, setting.varName, setting.onFoot)
-  end
-end
-
-HUDToggler.UpdateVehicleHUD = function()
-  for _, setting in pairs(settingsCache) do
-    GameSettings.UpdateSetting(HUDToggler.HUDSettingsGroup, setting.varName, setting.vehicle)
+    GameSettings.UpdateSetting(HUDToggler.HUDSettingsGroup, setting.varName, setting[key])
   end
 end
 
